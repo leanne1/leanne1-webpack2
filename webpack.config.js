@@ -22,6 +22,7 @@ module.exports = {
 	entry: {
 		app: './src/app/index.js',
 		vendor: ['react'],
+		styles: './src/styles/index.less',
 	},
 	output: {
 		filename: '[chunkhash].[name].js',
@@ -35,13 +36,14 @@ module.exports = {
 					fallbackLoader: 'style-loader',
 					loader: 'css-loader'
 				}),
-			}, {
+			},
+			{
 				test: /\.less$/,
 				loader: ExtractTextPlugin.extract({
 					fallbackLoader: 'style-loader',
 					loader: lessLoaders,
 				}),
-			}
+			},
 		]
 	},
 	devtool: 'source-map',
