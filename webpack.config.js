@@ -67,7 +67,9 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: './src/assets/index.html',
 		}),
-		new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.UglifyJsPlugin({
+			sourceMap: true,
+		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: ['vendor', 'manifest'],
 		}),
