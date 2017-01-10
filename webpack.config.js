@@ -25,7 +25,7 @@ const common = {
 	context: __dirname + '/src',
 	entry: {
 		app: './app/index.js',
-		vendor: ['react'],
+		vendor: ['react', 'react-dom'], // TODO: Add all vendor libs here
 	},
 	output: {
 		filename: '[chunkhash].[name].js',
@@ -54,9 +54,7 @@ const common = {
 			},
 		]
 	},
-	devtool: 'source-map',
 	plugins: [
-		// TODO: do we need this?
 		new webpack.DefinePlugin({
 			'process.env': {
 				'NODE_ENV': '"' + process.env.NODE_ENV + '"'
@@ -64,9 +62,6 @@ const common = {
 		}),
 		new HtmlWebpackPlugin({
 			template: './assets/index.html',
-		}),
-		new webpack.optimize.UglifyJsPlugin({
-			sourceMap: true,
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: ['vendor', 'manifest'],
@@ -88,8 +83,12 @@ if (TARGET === 'start') {
 
 if (TARGET === 'build') {
 	module.exports = merge(common, {
+		devtool: 'source-map',
 		plugins: [
 			new CleanWebpackPlugin(['dist']),
+			new webpack.optimize.UglifyJsPlugin({
+				sourceMap: true,
+			}),
 		],
 	});
 }
