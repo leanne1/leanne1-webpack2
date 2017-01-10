@@ -6,6 +6,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const TARGET = process.env.npm_lifecycle_event;
+const isDev = TARGET === 'start';
+const isProd = TARGET === 'build';
 
 const lessLoaders = [
 	{
@@ -21,11 +23,21 @@ const lessLoaders = [
 	}
 ];
 
+const jsLoaders = [
+	{
+		loader: 'babel-loader',
+	}
+];
+
+// TODO: Make sure to add all vendor libs here
+const vendorLibs = ['react', 'react-dom'];
+
+
 const common = {
 	context: __dirname + '/src',
 	entry: {
 		app: './app/index.js',
-		vendor: ['react', 'react-dom'], // TODO: Add all vendor libs here
+		vendor: vendorLibs,
 	},
 	output: {
 		filename: '[chunkhash].[name].js',
@@ -36,11 +48,7 @@ const common = {
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /(node_modules|bower_components)/,
-				use: [
-					{
-						loader: 'babel-loader',
-					}
-				],
+				use: jsLoaders,
 			},
 			{
 				test: /\.less$/,
@@ -66,8 +74,9 @@ const common = {
 	],
 };
 
-if (TARGET === 'start') {
+if (isDev) {
 	module.exports = merge(common, {
+		devtool: 'cheap-module-eval-source-map',
 		performance : {
 			hints : false,
 		},
@@ -77,7 +86,7 @@ if (TARGET === 'start') {
 	});
 }
 
-if (TARGET === 'build') {
+if (isProd) {
 	module.exports = merge(common, {
 		devtool: 'source-map',
 		plugins: [
