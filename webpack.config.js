@@ -1,8 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const TARGET = process.env.npm_lifecycle_event;
 
 const lessLoaders = [
 	{
@@ -18,7 +21,7 @@ const lessLoaders = [
 	}
 ];
 
-module.exports = {
+const common = {
 	context: __dirname + '/src',
 	entry: {
 		app: './app/index.js',
@@ -53,12 +56,12 @@ module.exports = {
 	},
 	devtool: 'source-map',
 	plugins: [
+		// TODO: do we need this?
 		new webpack.DefinePlugin({
 			'process.env': {
 				'NODE_ENV': '"' + process.env.NODE_ENV + '"'
 			},
 		}),
-		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
 			template: './assets/index.html',
 		}),
@@ -73,7 +76,20 @@ module.exports = {
 			allChunks: true
 		}),
 	],
-	devServer: {
-		contentBase: __dirname + '/src',
-	},
 };
+
+if (TARGET === 'start') {
+	module.exports = merge(common, {
+		devServer: {
+			contentBase: __dirname + '/src',
+		},
+	});
+}
+
+if (TARGET === 'build') {
+	module.exports = merge(common, {
+		plugins: [
+			new CleanWebpackPlugin(['dist']),
+		],
+	});
+}
