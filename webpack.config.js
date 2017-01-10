@@ -22,7 +22,6 @@ module.exports = {
 	entry: {
 		app: './src/app/index.js',
 		vendor: ['react'],
-		styles: './src/styles/index.less',
 	},
 	output: {
 		filename: '[chunkhash].[name].js',
@@ -30,6 +29,17 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.(js|jsx)$/,
+				exclude: /(node_modules|bower_components)/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: { presets: ['stage-0', 'es2015', 'react'] },
+
+					}
+				],
+			},
 			{
 				test: /\.css$/,
 				loader: ExtractTextPlugin.extract({
@@ -48,8 +58,15 @@ module.exports = {
 	},
 	devtool: 'source-map',
 	plugins: [
+		new webpack.DefinePlugin({
+			'process.env': {
+				'NODE_ENV': '"' + process.env.NODE_ENV + '"'
+			},
+		}),
 		new CleanWebpackPlugin(['dist']),
-		new HtmlWebpackPlugin({template: './src/assets/index.html'}),
+		new HtmlWebpackPlugin({
+			template: './src/assets/index.html',
+		}),
 		new webpack.optimize.UglifyJsPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: ['vendor', 'manifest'],
