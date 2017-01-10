@@ -6,15 +6,15 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const lessLoaders = [
 	{
-		loader: 'css-loader',
-		options: {
-			modules: true
-		}
-	}, {
+		loader: 'css-loader?sourceMap',
+		options: { modules: true, importLoaders: 1 }
+	},
+	{
 		loader: 'postcss-loader'
 	},
 	{
-		loader: 'less-loader'
+		loader: 'less-loader',
+		options: { sourceMap: true }
 	}
 ];
 
@@ -39,13 +39,6 @@ module.exports = {
 
 					}
 				],
-			},
-			{
-				test: /\.css$/,
-				loader: ExtractTextPlugin.extract({
-					fallbackLoader: 'style-loader',
-					loader: 'css-loader'
-				}),
 			},
 			{
 				test: /\.less$/,
