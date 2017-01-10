@@ -19,8 +19,9 @@ const lessLoaders = [
 ];
 
 module.exports = {
+	context: __dirname + '/src',
 	entry: {
-		app: './src/app/index.js',
+		app: './app/index.js',
 		vendor: ['react'],
 	},
 	output: {
@@ -42,6 +43,7 @@ module.exports = {
 			},
 			{
 				test: /\.less$/,
+				exclude: /(node_modules|bower_components)/,
 				loader: ExtractTextPlugin.extract({
 					fallbackLoader: 'style-loader',
 					loader: lessLoaders,
@@ -58,7 +60,7 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
-			template: './src/assets/index.html',
+			template: './assets/index.html',
 		}),
 		new webpack.optimize.UglifyJsPlugin({
 			sourceMap: true,
@@ -70,5 +72,8 @@ module.exports = {
 			filename: '[chunkhash].bundle.css',
 			allChunks: true
 		}),
-	]
+	],
+	devServer: {
+		contentBase: __dirname + '/src',
+	},
 };
