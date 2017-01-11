@@ -22,7 +22,6 @@ module.exports = function (config) {
 			'karma-mocha-reporter',
 			'karma-coverage',
 			'istanbul-instrumenter-loader',
-
 		],
 		preprocessors: {
 			'test/tests.bundle.js': ['webpack', 'sourcemap']
