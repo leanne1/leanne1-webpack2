@@ -1,14 +1,9 @@
-var webpackConfig = require('./webpack.config');
-webpackConfig.devtool = 'inline-source-map';
-
 const TARGET = process.env.npm_lifecycle_event;
 const isTdd = TARGET === 'test:tdd';
-console.log('################### TARGET', TARGET);
-console.log('################### isTdd', isTdd);
 
 module.exports = function (config) {
 	config.set({
-		browsers: [ 'PhantomJS' ],
+		browsers: ['PhantomJS'],
 		files: [
 			'node_modules/phantomjs-function-bind-polyfill/index.js',
 			'node_modules/phantomjs-polyfill/bind-polyfill.js',
@@ -20,23 +15,17 @@ module.exports = function (config) {
 		frameworks: [ 'chai', 'mocha' ],
 		plugins: [
 			'karma-phantomjs-launcher',
-			'karma-chrome-launcher',
 			'karma-chai',
 			'karma-mocha',
 			'karma-sourcemap-loader',
 			'karma-webpack',
+			'karma-mocha-reporter'
 		],
-		// run the bundle through the webpack and sourcemap plugins
 		preprocessors: {
-			'test/tests.bundle.js': [ 'webpack', 'sourcemap' ]
+			'test/tests.bundle.js': ['webpack', 'sourcemap']
 		},
-		reporters: [ 'dots' ],
+		reporters: ['mocha'],
 		singleRun: !isTdd,
-		// webpack config object
-		// webpack: webpackConfig,
-
-
-
 		webpack: {
 			devtool: 'inline-source-map',
 			module: {
@@ -50,7 +39,6 @@ module.exports = function (config) {
 				// } ]
 			}
 		},
-
 		webpackMiddleware: {
 			noInfo: true,
 		}
