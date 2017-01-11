@@ -1,5 +1,16 @@
+# package manager
 node_modules/
-*.log
-.idea
-.DS_Store
+bower_components/
+
+# built files
 dist/
+test/coverage
+
+# logs
+*.log
+
+# IDE
+.idea
+
+# OSX
+.DS_Store

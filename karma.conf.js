@@ -12,31 +12,36 @@ module.exports = function (config) {
 			'node_modules/whatwg-fetch/fetch.js',
 			'test/tests.bundle.js'
 		],
-		frameworks: [ 'chai', 'mocha' ],
+		frameworks: ['chai', 'mocha'],
 		plugins: [
+			'karma-webpack',
 			'karma-phantomjs-launcher',
 			'karma-chai',
 			'karma-mocha',
 			'karma-sourcemap-loader',
-			'karma-webpack',
-			'karma-mocha-reporter'
+			'karma-mocha-reporter',
+			'karma-coverage',
+			'istanbul-instrumenter-loader',
+
 		],
 		preprocessors: {
 			'test/tests.bundle.js': ['webpack', 'sourcemap']
 		},
-		reporters: ['mocha'],
+		reporters: ['mocha', 'coverage'],
 		singleRun: !isTdd,
+		coverageReporter: {
+			reporters: [
+				{ type: 'text' },
+				{ type: 'html' }
+			],
+			dir: 'test/coverage/'
+		},
 		webpack: {
 			devtool: 'inline-source-map',
 			module: {
 				loaders: [
 					{ test: /\.jsx?$/, loader: 'babel-loader' }
-				],
-				// postLoaders: [ {
-				// 	test: /\.js$/,
-				// 	exclude: /(test|node_modules|bower_components)\//,
-				// 	loader: 'istanbul-instrumenter'
-				// } ]
+				]
 			}
 		},
 		webpackMiddleware: {
