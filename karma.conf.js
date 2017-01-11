@@ -36,6 +36,7 @@ module.exports = function (config) {
 			dir: 'test/coverage/'
 		},
 		webpack: {
+			// entry: 'test/tests.bundle.js',
 			devtool: 'inline-source-map',
 			module: {
 				loaders: [
