@@ -10,7 +10,7 @@ test/coverage
 *.log
 
 # IDE
-.idea
+.idea/
 
 # OSX
 .DS_Store
