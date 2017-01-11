@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -33,7 +33,7 @@ const jsLoaders = [
 const vendorLibs = ['react', 'react-dom'];
 
 const common = {
-	context: resolve(__dirname, 'src'),
+	context: path.resolve(__dirname, 'src'),
 	module: {
 		rules: [
 			{
@@ -68,7 +68,7 @@ if (isDev) {
 		],
 		output: {
 			filename: '[name].js',
-			path: resolve(__dirname, 'demo'),
+			path: path.resolve(__dirname, 'demo'),
 			publicPath: '/',
 		},
 		devtool: 'cheap-module-eval-source-map',
@@ -77,7 +77,7 @@ if (isDev) {
 		},
 		devServer: {
 			hot: true,
-			contentBase: resolve(__dirname, 'demo'),
+			contentBase: path.resolve(__dirname, 'demo'),
 			publicPath: '/',
 		},
 		plugins: [
@@ -99,7 +99,7 @@ if (isProd) {
 		},
 		output: {
 			filename: '[chunkhash].[name].js',
-			path: resolve(__dirname, 'dist'),
+			path: path.resolve(__dirname, 'dist'),
 		},
 		devtool: 'source-map',
 		plugins: [
