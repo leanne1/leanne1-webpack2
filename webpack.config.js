@@ -30,7 +30,11 @@ const jsLoaders = [
 ];
 
 // TODO: Make sure to add all vendor libs here
-const vendorLibs = ['react', 'react-dom'];
+const vendorLibs = [
+	'react',
+	'react-dom',
+	'whatwg-fetch'
+];
 
 const common = {
 	context: path.resolve(__dirname, 'src'),
@@ -117,3 +121,4 @@ if (isProd) {
 		],
 	});
 }
+
