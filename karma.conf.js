@@ -9,7 +9,7 @@ module.exports = function (config) {
 			'node_modules/phantomjs-polyfill-includes/includes-polyfill.js',
 			'node_modules/babel-es6-polyfill/browser-polyfill.js',
 			'node_modules/whatwg-fetch/fetch.js',
-			'test/tests.bundle.js'
+			'test/unit/setup/tests.bundle.js'
 		],
 		frameworks: ['chai', 'mocha'],
 		plugins: [
@@ -23,7 +23,7 @@ module.exports = function (config) {
 			'istanbul-instrumenter-loader',
 		],
 		preprocessors: {
-			'test/tests.bundle.js': ['webpack', 'sourcemap']
+			'test/unit/setup/tests.bundle.js': ['webpack', 'sourcemap']
 		},
 		reporters: ['mocha', 'coverage'],
 		singleRun: isProd,
