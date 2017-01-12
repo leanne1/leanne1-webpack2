@@ -19,8 +19,7 @@ const commonLessLoaders = [
 		loader: 'postcss-loader'
 	},
 	{
-		loader: 'less-loader',
-		options: { sourceMap: true }
+		loader: 'less-loader?sourceMap',
 	}
 ];
 
@@ -95,7 +94,7 @@ if (isDev) {
 				},
 			],
 		},
-		devtool: 'cheap-module-eval-source-map',
+		devtool: 'cheap-module-source-map',
 		performance : {
 			hints : false,
 		},
