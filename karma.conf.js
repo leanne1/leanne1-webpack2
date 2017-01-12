@@ -38,8 +38,20 @@ module.exports = function (config) {
 			devtool: 'inline-source-map',
 			module: {
 				loaders: [
-					{ test: /\.jsx?$/, loader: 'babel-loader' }
+					{
+						test: /\.jsx?$/,
+						loader: 'babel-loader',
+						query: {
+							presets: ['airbnb']
+						}
+					}
 				]
+			},
+			externals: {
+				'cheerio': 'window',
+				'react/addons': true,
+				'react/lib/ExecutionEnvironment': true,
+				'react/lib/ReactContext': true
 			}
 		},
 		webpackMiddleware: {
