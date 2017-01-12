@@ -1,13 +1,9 @@
-function component () {
+const component = () => {
 	const element = document.createElement('p');
-
-	element.innerHTML = ['Hello','webpack'].map(function(item){
-		return item + ' qux ';
-	});
-
+	element.innerHTML = ['Hello', 'webpack'].map((item) => `${item}' qux '`);
 	return element;
-}
+};
 
-export default function () {
+export default () => {
 	document.body.appendChild(component());
-}
+};

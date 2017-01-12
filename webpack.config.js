@@ -9,7 +9,8 @@ const TARGET = process.env.npm_lifecycle_event;
 const isDev = TARGET === 'start';
 const isProd = TARGET === 'build';
 
-const lessLoaders = [
+// Define loaders
+const commonLessLoaders = [
 	{
 		loader: 'css-loader?sourceMap',
 		options: { modules: true, importLoaders: 1 }
@@ -23,12 +24,19 @@ const lessLoaders = [
 	}
 ];
 
-const jsLoaders = [
+const devJsLoaders = [
 	{
-		loader: 'babel-loader',
+		loader: 'eslint-loader',
 	}
 ];
 
+const commonJsLoaders = [
+	{
+		loader: 'babel-loader',
+	},
+];
+
+// Define vendor bundle
 // TODO: Make sure to add all vendor libs / polyfills here
 const vendorLibs = [
 	'babel-es6-polyfill',
@@ -37,6 +45,7 @@ const vendorLibs = [
 	'whatwg-fetch'
 ];
 
+// Config for all envs
 const common = {
 	context: path.resolve(__dirname, 'src'),
 	module: {
@@ -44,17 +53,17 @@ const common = {
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /(node_modules|bower_components)/,
-				use: jsLoaders,
+				use: commonJsLoaders,
 			},
 			{
 				test: /\.less$/,
 				exclude: /(node_modules|bower_components)/,
 				loader: ExtractTextPlugin.extract({
 					fallbackLoader: 'style-loader',
-					loader: lessLoaders,
+					loader: commonLessLoaders,
 				}),
 			},
-		]
+		],
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
@@ -63,6 +72,7 @@ const common = {
 	]
 };
 
+// Dev env
 if (isDev) {
 	module.exports = merge(common, {
 		entry: [
@@ -75,6 +85,15 @@ if (isDev) {
 			filename: '[name].js',
 			path: path.resolve(__dirname, 'demo'),
 			publicPath: '/',
+		},
+		module: {
+			rules: [
+				{
+					test: /\.(js|jsx)$/,
+					exclude: /(node_modules|bower_components)/,
+					use: devJsLoaders,
+				},
+			],
 		},
 		devtool: 'cheap-module-eval-source-map',
 		performance : {
@@ -96,6 +115,7 @@ if (isDev) {
 	});
 }
 
+// Prod env
 if (isProd) {
 	module.exports = merge(common, {
 		entry: {
@@ -122,4 +142,3 @@ if (isProd) {
 		],
 	});
 }
-
