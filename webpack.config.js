@@ -29,8 +29,9 @@ const jsLoaders = [
 	}
 ];
 
-// TODO: Make sure to add all vendor libs here
+// TODO: Make sure to add all vendor libs / polyfills here
 const vendorLibs = [
+	'babel-es6-polyfill',
 	'react',
 	'react-dom',
 	'whatwg-fetch'
