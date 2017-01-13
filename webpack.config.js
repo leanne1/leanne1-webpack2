@@ -4,12 +4,15 @@ const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 const TARGET = process.env.npm_lifecycle_event;
 const isDev = TARGET === 'start';
 const isProd = TARGET === 'build';
 
-// Define loaders
+/**
+ * Define loaders
+ */
 const commonLessLoaders = [
 	{
 		loader: 'css-loader?sourceMap',
@@ -23,19 +26,27 @@ const commonLessLoaders = [
 	}
 ];
 
-const devJsLoaders = [
-	{
-		loader: 'eslint-loader',
-	}
-];
-
 const commonJsLoaders = [
 	{
 		loader: 'babel-loader',
 	},
 ];
 
-// Define vendor bundle
+const commonImgLoaders = [
+	{
+		loader: 'url-loader?limit=8192&name=img/img-[hash:6].[ext]', // Move images to /img
+	},
+];
+
+const devJsLoaders = [
+	{
+		loader: 'eslint-loader',
+	}
+];
+
+/**
+ * Define JS vendor bundle
+ */
 // TODO: Make sure to add all vendor libs / polyfills here
 const vendorLibs = [
 	'babel-es6-polyfill',
@@ -44,7 +55,9 @@ const vendorLibs = [
 	'whatwg-fetch'
 ];
 
-// Config for all envs
+/**
+ * Config common to all envs
+ */
 const common = {
 	context: path.resolve(__dirname, 'src'),
 	module: {
@@ -62,6 +75,11 @@ const common = {
 					loader: commonLessLoaders,
 				}),
 			},
+			{
+				test: /\.(png|jpe?g|gif|svg)$/,
+				exclude: /(node_modules|bower_components)/,
+				loader: commonImgLoaders,
+			},
 		],
 	},
 	plugins: [
@@ -71,7 +89,9 @@ const common = {
 	]
 };
 
-// Dev env
+/**
+ * Dev env
+ */
 if (isDev) {
 	module.exports = merge(common, {
 		entry: [
@@ -114,7 +134,9 @@ if (isDev) {
 	});
 }
 
-// Prod env
+/**
+ * Prod env
+ */
 if (isProd) {
 	module.exports = merge(common, {
 		entry: {
@@ -137,6 +159,10 @@ if (isProd) {
 			new ExtractTextPlugin({
 				filename: '[chunkhash].bundle.css',
 				allChunks: true
+			}),
+			new ImageminPlugin({
+				test: path.resolve(__dirname, 'src/assets/img/'),
+				jpegtran: { progressive: true }
 			}),
 		],
 	});

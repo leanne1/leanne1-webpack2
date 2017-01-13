@@ -44,8 +44,14 @@ module.exports = function (config) {
 						query: {
 							presets: ['airbnb']
 						}
-					}
-				]
+					},
+					// Ignore imported images in unit tests
+					{
+						test: /\.(png|jpe?g|gif|svg)$/,
+						exclude: /(node_modules|bower_components)/,
+						loader: 'null-loader',
+					},
+				],
 			},
 			externals: {
 				'cheerio': 'window',
@@ -59,4 +65,3 @@ module.exports = function (config) {
 		}
 	});
 };
-
